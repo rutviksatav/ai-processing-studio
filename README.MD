@@ -1,114 +1,64 @@
-# AI Processing Studio
+<div align="center">
 
-An async document processing pipeline that uploads PDFs, extracts text, generates AI-powered summaries using Groq (LLaMA 3.3), and produces downloadable Word documents.
+# 🤖 AI Processing Studio
 
-![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)
-![Groq](https://img.shields.io/badge/Groq-LLaMA_3.3-orange)
+**Upload PDFs, get AI-powered summaries as downloadable Word documents.**
+
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Groq](https://img.shields.io/badge/Groq-LLaMA_3.3_70B-F55036?style=for-the-badge)](https://groq.com)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
+
+</div>
+
+---
 
 ## Features
 
-- **PDF Upload & Processing** — Upload PDFs up to 50MB
-- **Async Job Queue** — Configurable concurrent workers process jobs in the background
-- **Real-time Status Tracking** — Live pipeline progress (Extract → Summarize → Generate DOCX)
-- **AI Summarization** — Powered by Groq's LLaMA 3.3 70B model
-- **DOCX Export** — Download professional Word document summaries
-- **Crash Recovery** — Incomplete jobs are automatically re-enqueued on server restart
-- **Auto Cleanup** — Uploaded PDFs are deleted after text extraction to save storage
+- 📄 **PDF Upload** — Accepts PDFs up to 50MB
+- 🤖 **AI Summarization** — Powered by Groq's LLaMA 3.3 70B model
+- ⚡ **Async Queue** — 3 concurrent background workers
+- 📊 **Live Progress** — Real-time pipeline stepper (Extract → Summarize → Generate → Done)
+- 📥 **DOCX Download** — Professional Word document output
 
-## Architecture
-
-```
-Frontend (Vanilla JS) → FastAPI REST API → Async Queue → Workers
-                                              ↓
-                                    PDF Extract → LLM Summary → DOCX Generation
-                                              ↓
-                                         SQLite DB (job tracking)
-```
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Backend | FastAPI, SQLAlchemy (async), aiosqlite |
-| AI | Groq API (LLaMA 3.3 70B Versatile) |
-| Frontend | Vanilla HTML/CSS/JS |
-| Database | SQLite |
-| Document Processing | pypdf, python-docx |
+---
 
 ## Getting Started
 
 ### Prerequisites
 
 - Python 3.11+
-- A [Groq API key](https://console.groq.com/keys)
+- [Groq API Key](https://console.groq.com/keys) (free)
 
-### Local Setup
+### Setup
 
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/scheduler_app.git
-cd scheduler_app
+git clone https://github.com/rutviksatav/ai-processing-studio.git
+cd ai-processing-studio
 
-# Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate
 
-# Install dependencies
 pip install -r requirements.txt
 
-# Configure environment
 cp .env.example .env
-# Edit .env and add your GROQ_API_KEY
+# Add your GROQ_API_KEY in .env
 
-# Run the application
 uvicorn app.main:app --reload
 ```
 
-Open **http://127.0.0.1:8000/frontend/index.html** in your browser.
+Open **http://127.0.0.1:8000/frontend/index.html**
 
-### Docker
 
-```bash
-docker build -t ai-processing-studio .
-docker run -p 8000:8000 -e GROQ_API_KEY=your_key_here ai-processing-studio
-```
+## Tech Stack
 
-## Deployment (Render)
+**Backend:** FastAPI, SQLAlchemy (async), aiosqlite, Pydantic
+**AI:** Groq SDK (LLaMA 3.3 70B Versatile)
+**Documents:** pypdf, python-docx
+**Frontend:** Vanilla HTML/CSS/JS
 
-1. Push this repo to GitHub
-2. Go to [render.com](https://render.com) → **New Web Service**
-3. Connect your GitHub repo
-4. Settings will auto-configure from `render.yaml`
-5. Add your `GROQ_API_KEY` in the Render dashboard → Environment
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/jobs` | Upload a PDF file for processing |
-| `GET` | `/jobs` | List all jobs with status |
-| `GET` | `/jobs/{job_id}/download` | Download the generated DOCX summary |
-
-## Project Structure
-
-```
-scheduler_app/
-├── app/
-│   ├── api/          # REST API routes
-│   ├── core/         # Config & logging
-│   ├── db/           # Database models & init
-│   ├── queue/        # Async job queue & workers
-│   ├── repositories/ # Data access layer
-│   ├── schemas/      # Pydantic schemas & enums
-│   ├── services/     # PDF, LLM, file processing
-│   └── main.py       # FastAPI app entry point
-├── frontend/         # Static HTML/CSS/JS frontend
-├── Dockerfile
-├── render.yaml
-└── requirements.txt
-```
+---
 
 ## License
 
-MIT
+MIT — [Rutvik Satav](https://github.com/rutviksatav)
